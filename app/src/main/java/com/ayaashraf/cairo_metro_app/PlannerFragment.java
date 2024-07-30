@@ -1,10 +1,11 @@
 package com.ayaashraf.cairo_metro_app;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,36 +13,39 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.util.DisplayMetrics;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
-public class MainActivity2 extends AppCompatActivity {
-    ArrayList<String> stations;
-    LinearLayout parentLayout;
-    Spinner entry;
-    Spinner exit;
-    String entryStation, exitStation;
-    ArrayList<String> shortPath;
-    ArrayAdapter<String> adapter;
-    Button allroutes ;
-    PriorityQueue<ArrayList<String>> allpaths;
+public class PlannerFragment extends Fragment {
 
+    private ArrayList<String> stations;
+    private LinearLayout parentLayout;
+    private Spinner entry;
+    private Spinner exit;
+    private ArrayList<String> shortPath;
+    private ArrayAdapter<String> adapter;
+    private Button allRoutes;
+    private Button reset;
+    private PriorityQueue<ArrayList<String>> allPaths;
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_planner, container, false);
 
-        entry = findViewById(R.id.spinner3);
-        exit = findViewById(R.id.spinner4);
+        // Initialize UI components
+        entry = view.findViewById(R.id.spinner3);
+        exit = view.findViewById(R.id.spinner4);
+        allRoutes = view.findViewById(R.id.allRoutes);
+        parentLayout = view.findViewById(R.id.parent_layout);
 
         // Initialize station list
         stations = new ArrayList<>(Arrays.asList(
@@ -64,61 +68,65 @@ public class MainActivity2 extends AppCompatActivity {
                 "Bulaq Al-Dakrour"
         ));
 
-        allroutes = findViewById(R.id.allRoutes);
         // Initialize adapter
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stations);
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, stations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Set adapter to spinners
         entry.setAdapter(adapter);
         exit.setAdapter(adapter);
 
-        parentLayout = findViewById(R.id.parent_layout);
-        allpaths = new PriorityQueue<>();
+        // Initialize variables
+        allPaths = new PriorityQueue<>();
         shortPath = new ArrayList<>();
 
-        // Apply window insets listener
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Set up button click listeners
+        allRoutes.setOnClickListener(this::getAllRoutes);
+        view.findViewById(R.id.confirm).setOnClickListener(this::confirmButton);
+        view.findViewById(R.id.imageView).setOnClickListener(this::mapfullscreen);
+        reset= view.findViewById(R.id.reset);
+        reset.setOnClickListener(v -> ResetButton(v));
+        return view;
     }
 
     public void mapfullscreen(View view) {
-        Intent intent = new Intent(this, MapFullscreen.class);
+        Intent intent = new Intent(getActivity(), MapFullscreen.class);
         startActivity(intent);
     }
 
-    public void ConfirmButton(View view) {
-        entryStation = entry.getSelectedItem().toString();
-        exitStation = exit.getSelectedItem().toString();
+    public void confirmButton(View view) {
+        String entryStation = entry.getSelectedItem().toString();
+        String exitStation = exit.getSelectedItem().toString();
         parentLayout.removeAllViews();
-        allroutes.setVisibility(View.INVISIBLE);
+        allRoutes.setVisibility(View.INVISIBLE);
+
         if (entryStation.equals(adapter.getItem(0)) || exitStation.equals(adapter.getItem(0))) {
-            Toast.makeText(this, "Please Select a Station", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please Select a Station", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (entryStation.equals(exitStation)) {
-            Toast.makeText(this, "Similar Stations, Try Again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Similar Stations, Try Again", Toast.LENGTH_SHORT).show();
             return;
         }
-        allpaths = DFS.DFSAlgo(entryStation, exitStation);
-        shortPath = allpaths.peek();
+
+        allPaths = DFS.DFSAlgo(entryStation, exitStation);
+        shortPath = allPaths.peek();
         if (shortPath == null || shortPath.isEmpty()) {
-            Toast.makeText(this, entryStation, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No Path Found", Toast.LENGTH_SHORT).show();
             return;
         }
-        System.out.println(shortPath);
+
         Display(shortPath);
-        allroutes.setVisibility(View.VISIBLE);
+        allRoutes.setVisibility(View.VISIBLE);
     }
 
-    private void Display(ArrayList<String> path){
+    private void Display(ArrayList<String> path) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
-        LinearLayout pathLayout = new LinearLayout(this);
+
+        LinearLayout pathLayout = new LinearLayout(getContext());
         pathLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams pathLayoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -127,8 +135,7 @@ public class MainActivity2 extends AppCompatActivity {
         pathLayout.setLayoutParams(pathLayoutParams);
         pathLayout.setPadding(16, 16, 16, 16);
 
-
-        LinearLayout squareLayout = new LinearLayout(this);
+        LinearLayout squareLayout = new LinearLayout(getContext());
         squareLayout.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams squareLayoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -138,37 +145,30 @@ public class MainActivity2 extends AppCompatActivity {
         squareLayout.setPadding(0, 0, 0, 16);
 
         for (int i = 0; i < 3; i++) {
-            TextView squareView = new TextView(this);
+            TextView squareView = new TextView(getContext());
             LinearLayout.LayoutParams squareParams = new LinearLayout.LayoutParams(screenWidth / 3 - 40, 250);
             squareParams.setMargins(14, 60, 14, 30);
             squareView.setLayoutParams(squareParams);
             squareView.setBackgroundColor(Color.parseColor("#E4F5FF"));
-            squareView.setText("Square " + (i + 1));
             squareView.setTextColor(Color.parseColor("#575A5C"));
             squareView.setTextSize(18);
             squareView.setTypeface(null, Typeface.BOLD);
             squareView.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
             squareView.setPadding(16, 16, 16, 16);
             squareLayout.addView(squareView);
-            if(i == 0)
-            {
-                squareView.setText(shortPath.size()+" Stations");
-            }
-            else if (i == 1)
-            {
-                squareView.setText(Controller.getTime(shortPath.size()));
-            }
-            else
-            {
-                squareView.setText(Controller.totalPrice(shortPath.size())+"L.E");
-            }
 
+            if (i == 0) {
+                squareView.setText(shortPath.size() + " Stations");
+            } else if (i == 1) {
+                squareView.setText(Controller.getTime(shortPath.size()));
+            } else {
+                squareView.setText(Controller.totalPrice(shortPath.size()) + "L.E");
+            }
         }
 
         pathLayout.addView(squareLayout);
 
-
-        LinearLayout infoLayout = new LinearLayout(this);
+        LinearLayout infoLayout = new LinearLayout(getContext());
         infoLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams infoLayoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -177,35 +177,31 @@ public class MainActivity2 extends AppCompatActivity {
         infoLayout.setLayoutParams(infoLayoutParams);
         infoLayout.setPadding(0, 0, 0, 16);
 
-
-        TextView directionView = new TextView(this);
+        TextView directionView = new TextView(getContext());
         directionView.setText(Controller.getDirection(shortPath));
-        directionView.setTextColor(Color.BLACK);
-        LinearLayout.LayoutParams directionViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        directionViewParams.setMargins(14,0,14,32);
-        directionView.setLayoutParams(directionViewParams);
         directionView.setTextColor(Color.parseColor("#575A5C"));
+        LinearLayout.LayoutParams directionViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        directionViewParams.setMargins(14, 0, 14, 32);
+        directionView.setLayoutParams(directionViewParams);
         directionView.setTextSize(18);
         directionView.setTypeface(null, Typeface.BOLD);
         directionView.setPadding(32, 32, 32, 32);
         directionView.setBackgroundColor(Color.parseColor("#E4F5FF"));
         infoLayout.addView(directionView);
-        TextView stationsView = new TextView(this);
+
+        TextView stationsView = new TextView(getContext());
         StringBuilder sb = new StringBuilder();
         for (String s : path) {
             sb.append(s).append("\n");
         }
         stationsView.setText(sb.toString());
-        stationsView.setTextColor(Color.BLACK);
+        stationsView.setTextColor(Color.parseColor("#575A5C"));
         LinearLayout.LayoutParams stationsViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         stationsView.setLayoutParams(stationsViewParams);
-        stationsView.setTextColor(Color.parseColor("#575A5C"));
-        stationsViewParams.setMargins(14,8,14,60);
-        stationsView.setBackgroundColor(Color.parseColor("#E4F5FF"));
         stationsView.setTextSize(16);
         stationsView.setTypeface(null, Typeface.BOLD);
         stationsView.setPadding(150, 32, 32, 32);
-
+        stationsView.setBackgroundColor(Color.parseColor("#E4F5FF"));
         infoLayout.addView(stationsView);
 
         pathLayout.addView(infoLayout);
@@ -214,17 +210,16 @@ public class MainActivity2 extends AppCompatActivity {
         parentLayout.addView(pathLayout);
     }
 
-    public void BackButton(View view) {
-        Intent intent= new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public void getAllRoutes(View view)
-    {
-        ArrayList<ArrayList<String>> arr = new ArrayList<>(allpaths);
-        Intent i = new Intent(this,AllRoutes.class);
-        i.putExtra("allPaths",arr);
+    public void getAllRoutes(View view) {
+        ArrayList<ArrayList<String>> arr = new ArrayList<>(allPaths);
+        Intent i = new Intent(getActivity(), AllRoutes.class);
+        i.putExtra("allPaths", arr);
         startActivity(i);
     }
 
+
+    public void ResetButton(View view) {
+        entry.setSelection(0);
+        exit.setSelection(0);
+    }
 }
