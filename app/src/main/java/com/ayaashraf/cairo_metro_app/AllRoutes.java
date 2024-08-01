@@ -2,6 +2,7 @@ package com.ayaashraf.cairo_metro_app;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,18 +19,30 @@ import java.util.ArrayList;
 public class AllRoutes extends AppCompatActivity {
 
     private LinearLayout parentLayout;
+    private TextView allRoutesTextview;
     private ArrayList<ArrayList<String>> allPaths;
+
+    private SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "mypref";
+    private static final String KEY_LANGUAGE = "language";
+    private Language language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_routes);
+
         allPaths = new ArrayList<>();
-
-
         Intent i = getIntent();
         allPaths = (ArrayList<ArrayList<String>>) i.getSerializableExtra("allPaths");
         parentLayout = findViewById(R.id.parent_layout);
+        allRoutesTextview = findViewById(R.id.allRoutesTextView);
+
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        String languageCode = sharedPreferences.getString(KEY_LANGUAGE, "ar");
+        language = LanguageFactory.getLanguage(languageCode);
+
+        allRoutesTextview.setText(language.getAllRoutesTextView());
 
         generateSchema(allPaths);
 

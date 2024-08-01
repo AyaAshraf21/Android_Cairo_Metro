@@ -1,5 +1,6 @@
 package com.ayaashraf.cairo_metro_app;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,10 +21,16 @@ public class menuFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Language language;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "mypref";
+    private static final String KEY_LANGUAGE = "language";
+    TextView welcomeTextView;
 
     public menuFragment() {
         // Required empty public constructor
@@ -49,6 +57,9 @@ public class menuFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, getActivity().MODE_PRIVATE);
+        String languageCode = sharedPreferences.getString(KEY_LANGUAGE, "ar");
+        language = LanguageFactory.getLanguage(languageCode);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -56,9 +67,12 @@ public class menuFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu, container, false);
+        View view =  inflater.inflate(R.layout.fragment_menu, container, false);
+        welcomeTextView = view.findViewById(R.id.entryStationTextView);
+        welcomeTextView.setText(language.getWelcomeTextView());
+
+        return view;
     }
 }

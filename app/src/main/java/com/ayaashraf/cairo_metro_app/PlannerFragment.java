@@ -1,6 +1,7 @@
 package com.ayaashraf.cairo_metro_app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,71 +22,110 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.PriorityQueue;
 
 public class PlannerFragment extends Fragment {
 
     private ArrayList<String> stations;
     private LinearLayout parentLayout;
-    private Spinner entry;
-    private Spinner exit;
     private ArrayList<String> shortPath;
     private ArrayAdapter<String> adapter;
-    private Button allRoutes;
-    private Button reset;
-    private PriorityQueue<ArrayList<String>> allPaths;
+    private Button allRoutesButton;
+    private Button confirmButton;
+    private Button resetButton;
+
+    private TextView entryStationTextView;
+    private TextView exitStationTextView;
+
+    private ArrayList<ArrayList<String>> allPaths;
+    private AutoCompleteTextView entrySpinner;
+    private AutoCompleteTextView exitSpinner;
+
+    private SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "mypref";
+    private static final String KEY_LANGUAGE = "language";
+    private Language language;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_planner, container, false);
-
-        // Initialize UI components
-        entry = view.findViewById(R.id.spinner3);
-        exit = view.findViewById(R.id.spinner4);
-        allRoutes = view.findViewById(R.id.allRoutes);
         parentLayout = view.findViewById(R.id.parent_layout);
 
-        // Initialize station list
-        stations = new ArrayList<>(Arrays.asList(
-                "Please Select", "New El-Marg", "El-Marg", "Ezbet El-Nakhl", "Ain Shams", "El-Matareyya",
-                "Helmeyet El-Zaitoun", "Hadayeq El-Zaitoun", "Saray El-Qobba", "Hammamat El-Qobba",
-                "Kobri El-Qobba", "Manshiet El Sadr", "EL-Demerdash", "Ghamra",
-                "Al-Shohadaa", "Orabi", "Nasser", "Sadat",
-                "Saad Zaghloul", "Al-Sayeda Zeinab", "El-Malek El-Saleh", "Mar Girgis",
-                "El-Zahraa", "Dar El-Salam", "Hadayek El-Maadi", "Maadi",
-                "Sakanat El-Maadi", "Tora El-Balad", "Kozzika", "Tora El-Asmant",
-                "El-Maasara", "Hadayek Helwan", "Wadi Hof", "Helwan University",
-                "Ain Helwan", "Helwan", "Cairo University", "Faisal",
-                "Giza", "Omm El-Masryeen", "Sakiat Mekky", "El-Mounib",
-                "Adly Mansour", "El Haykestep", "Omar Ibn El-Khattab", "Qobaa",
-                "Hesham Barakat", "El-Nozha", "Nadi El-Shams", "Alf Maskan",
-                "Heliopolis", "Haroun", "Al-Ahram", "Koleyet El-Banat",
-                "Stadium", "Fair Zone", "Abbassiya", "Abdou Pasha",
-                "El-Geish", "Bab El Shaaria", "Attaba", "Mohamed Naguib",
-                "Opera", "Dokki", "El Bohouth", "Cairo University",
-                "Bulaq Al-Dakrour"
-        ));
+        entryStationTextView = view.findViewById(R.id.entryStationTextView);
+        exitStationTextView = view.findViewById(R.id.allRoutesTextView);
+        allRoutesButton = view.findViewById(R.id.allRoutesButton);
+        entrySpinner = view.findViewById(R.id.entrySpinner);
+        exitSpinner = view.findViewById(R.id.exitSpinner);
+        resetButton = view.findViewById(R.id.resetButton);
+        confirmButton = view.findViewById(R.id.confirmButton);
 
-        // Initialize adapter
+        sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, getActivity().MODE_PRIVATE);
+        String languageCode = sharedPreferences.getString(KEY_LANGUAGE, "ar");
+        language = LanguageFactory.getLanguage(languageCode);
+
+        entryStationTextView.setText(language.getEntryStationTextView());
+        exitStationTextView.setText(language.getExitStationTextView());
+        allRoutesButton.setText(language.getAllRoutesTextView());
+        entrySpinner.setHint(language.getEntrySpinner());
+        exitSpinner.setHint(language.getExitSpinner());
+        resetButton.setText(language.getResetButton());
+        confirmButton.setText(language.getConfirmButton());
+
+        stations = language.getStations();
+
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, stations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Set adapter to spinners
-        entry.setAdapter(adapter);
-        exit.setAdapter(adapter);
+        entrySpinner.setAdapter(adapter);
+        entrySpinner.setThreshold(1); // Start suggesting after 1 character
+
+        exitSpinner.setAdapter(adapter);
+        exitSpinner.setThreshold(1);
+
+        entrySpinner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                entrySpinner.showDropDown();
+            }
+        });
+
+        entrySpinner.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    entrySpinner.showDropDown();
+                }
+            }
+        });
+
+
+        exitSpinner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitSpinner.showDropDown();
+            }
+        });
+
+        exitSpinner.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    exitSpinner.showDropDown();
+                }
+            }
+        });
 
         // Initialize variables
-        allPaths = new PriorityQueue<>();
+        allPaths = new ArrayList<>();
         shortPath = new ArrayList<>();
 
         // Set up button click listeners
-        allRoutes.setOnClickListener(this::getAllRoutes);
-        view.findViewById(R.id.confirm).setOnClickListener(this::confirmButton);
+        allRoutesButton.setOnClickListener(this::getAllRoutes);
+        view.findViewById(R.id.confirmButton).setOnClickListener(this::confirmButton);
         view.findViewById(R.id.imageView).setOnClickListener(this::mapfullscreen);
-        reset= view.findViewById(R.id.reset);
-        reset.setOnClickListener(v -> ResetButton(v));
+        resetButton.setOnClickListener(this::ResetButton);
+
         return view;
     }
 
@@ -95,13 +135,19 @@ public class PlannerFragment extends Fragment {
     }
 
     public void confirmButton(View view) {
-        String entryStation = entry.getSelectedItem().toString();
-        String exitStation = exit.getSelectedItem().toString();
+        String entryStation = entrySpinner.getText().toString();
+        String exitStation = exitSpinner.getText().toString();
         parentLayout.removeAllViews();
-        allRoutes.setVisibility(View.INVISIBLE);
+        allRoutesButton.setVisibility(View.INVISIBLE);
 
-        if (entryStation.equals(adapter.getItem(0)) || exitStation.equals(adapter.getItem(0))) {
-            Toast.makeText(getContext(), "Please Select a Station", Toast.LENGTH_SHORT).show();
+        if(!stations.contains(entryStation))
+        {
+            Toast.makeText(getContext(), "please enter valid entry station", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!stations.contains(exitStation))
+        {
+            Toast.makeText(getContext(), "please enter valid exit station", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -111,14 +157,18 @@ public class PlannerFragment extends Fragment {
         }
 
         allPaths = DFS.DFSAlgo(entryStation, exitStation);
-        shortPath = allPaths.peek();
+        for(ArrayList<String> s : allPaths)
+        {
+            System.out.println(s);
+        }
+        shortPath = allPaths.get(0);
         if (shortPath == null || shortPath.isEmpty()) {
             Toast.makeText(getContext(), "No Path Found", Toast.LENGTH_SHORT).show();
             return;
         }
 
         Display(shortPath);
-        allRoutes.setVisibility(View.VISIBLE);
+        allRoutesButton.setVisibility(View.VISIBLE);
     }
 
     private void Display(ArrayList<String> path) {
@@ -197,29 +247,33 @@ public class PlannerFragment extends Fragment {
         stationsView.setText(sb.toString());
         stationsView.setTextColor(Color.parseColor("#575A5C"));
         LinearLayout.LayoutParams stationsViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        stationsViewParams.setMargins(14, 0, 14, 32);
         stationsView.setLayoutParams(stationsViewParams);
-        stationsView.setTextSize(16);
+        stationsView.setTextSize(18);
         stationsView.setTypeface(null, Typeface.BOLD);
-        stationsView.setPadding(150, 32, 32, 32);
+        stationsView.setPadding(32, 32, 32, 32);
         stationsView.setBackgroundColor(Color.parseColor("#E4F5FF"));
         infoLayout.addView(stationsView);
 
         pathLayout.addView(infoLayout);
 
-        // Add the LinearLayout for this path to the parent layout
         parentLayout.addView(pathLayout);
     }
 
     public void getAllRoutes(View view) {
-        ArrayList<ArrayList<String>> arr = new ArrayList<>(allPaths);
-        Intent i = new Intent(getActivity(), AllRoutes.class);
-        i.putExtra("allPaths", arr);
+        Intent i = new Intent(getActivity(),AllRoutes.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra("allPaths",allPaths);
         startActivity(i);
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
-
     public void ResetButton(View view) {
-        entry.setSelection(0);
-        exit.setSelection(0);
+        parentLayout.removeAllViews();
+        entrySpinner.setText("");
+        exitSpinner.setText("");
+        allRoutesButton.setVisibility(View.INVISIBLE);
     }
 }

@@ -16,9 +16,6 @@
             android:name=".MapFullscreen"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".AllRoutes"
             android:exported="false" />
         <activity

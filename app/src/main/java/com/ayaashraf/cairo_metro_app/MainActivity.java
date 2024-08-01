@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import com.ayaashraf.cairo_metro_app.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new menuFragment());
+        StationsUtil.initialize(this);
+        Controller.initialize(this);
         binding.bottomNavigationView.setOnItemSelectedListener(item ->{
             if (item.getItemId() == R.id.home) {
                 replaceFragment(new menuFragment());
