@@ -1,15 +1,41 @@
 package com.ayaashraf.cairo_metro_app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.*;
 
 public class Controller
 {
-    private static ArrayList<String> transtionStations = new ArrayList<>(Arrays.asList("Sadat","Nasser","Attaba","Al-Shohadaa","Cairo University","Kit Kat"));
+    private static SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "mypref";
+    private static final String KEY_LANGUAGE = "language";
+    private static String languageCode;
+    private static Language language;
+    private static ArrayList<String> transtionStations ;
 
-    private static ArrayList<String> line1 = new ArrayList<>(Arrays.asList("New El-Marg", "El-Marg", "Ezbet El-Nakhl", "Ain Shams", "El-Matareyya", "Helmeyet El-Zaitoun", "Hadayeq El-Zaitoun", "Saray El-Qobba", "Hammamat El-Qobba", "Kobri El-Qobba", "Manshiet El Sadr", "EL-Demerdash", "Ghamra", "Al-Shohadaa", "Orabi", "Nasser", "Sadat", "Saad Zaghloul", "Al-Sayeda Zeinab", "El-Malek El-Saleh", "Mar Girgis", "El-Zahraa", "Dar El-Salam", "Hadayek El-Maadi", "Maadi", "Sakanat El-Maadi", "Tora El-Balad", "Kozzika", "Tora El-Asmant", "El-Maasara", "Hadayek Helwan", "Wadi Hof", "Helwan University", "Ain Helwan", "Helwan"));
-    private static ArrayList<String> line2 = new ArrayList<>(Arrays.asList("Shubra El-Kheima", "Kolleyyet El-Zeraa", "Mezallat", "Khalafawy", "St. Teresa", "Rod El-Farag", "Masaraa", "Al-Shohadaa", "Attaba", "Mohamed Naguib", "Sadat", "Opera", "Dokki", "El Bohoth", "Cairo University", "Faisal", "Giza", "Omm El-Masryeen", "Sakiat Mekky", "El-Mounib"));
-    private static ArrayList<String> line3 = new ArrayList<>(Arrays.asList("Adly Mansour", "El Haykestep", "Omar Ibn El-Khattab", "Qobaa", "Hesham Barakat", "El-Nozha", "Nadi El-Shams", "Alf Maskan", "Heliopolis", "Haroun", "Al-Ahram", "Koleyet El-Banat", "Stadium", "Fair Zone", "Abbassiya", "Abdou Pasha", "El-Geish", "Bab El Shaaria", "Attaba", "Nasser", "Maspero", "Safaa Hegazy", "Kit Kat","Sudan","Imbaba","El-Bohy","El-Kawmeya Al-Arabiya","Ring Road","Rod El-Farag Axis"));
-    private static ArrayList<String> line3part2 = new ArrayList<>(Arrays.asList("Adly Mansour","Kit Kat","Tawfikeya", "Wadi El-Nile", "Gamaet El-Dowal Al-Arabiya", "Bulaq Al-Dakrour", "Cairo University"));
+    private static ArrayList<String> line1 ;
+    private static ArrayList<String> line2 ;
+    private static ArrayList<String> line3 ;
+    private static ArrayList<String> line3part2 ;
+    private static ArrayList<String> words;
+    private static Context context;
+
+    public static void initialize(Context ctx) {
+        context = ctx.getApplicationContext();
+        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        languageCode = sharedPreferences.getString(KEY_LANGUAGE, "ar");
+        language = LanguageFactory.getLanguage(languageCode);
+        line1 = language.getLine1();
+        line2 = language.getLine2();
+        line3 = language.getLine3();
+        line3part2 = language.getLine3part2();
+        transtionStations = language.getTranstionStations();
+
+        words = language.getWords();
+
+    }
+
 
     public static int totalPrice(int stationsNum)
     {
@@ -41,11 +67,11 @@ public class Controller
         int count = stationsNum * 2;
         if(count >= 60)
         {
-            time = count / 60 + " hours, "+(count % 60) + " minutes";
+            time = count / 60 + words.get(1)+", "+(count % 60) + " "+words.get(0);
         }
         else
         {
-            time = count + " minutes";
+            time = count + " "+words.get(0);
         }
 
         return time;
@@ -124,11 +150,11 @@ public class Controller
 
         if(firstLine.indexOf(path.get(0)) < firstLine.indexOf(path.get(1)))
         {
-            direction.append("[").append(firstLine.get(firstLine.size() - 1)).append("] Direction  ");
+            direction.append("[").append(firstLine.get(firstLine.size() - 1)).append("]").append(words.get(3)).append(" ");
         }
         else
         {
-            direction.append("[").append(firstLine.get(0)).append("] Direction  ");
+            direction.append("[").append(firstLine.get(0)).append("]").append(words.get(3)).append(" ");
         }
 
         for (int i = 1; i < path.size() - 1; i++)
@@ -140,17 +166,17 @@ public class Controller
                 {
                     if (i + 1 < path.size()) {
                         ArrayList<String> lineShared = getSharedLine(currentStation, path.get(path.indexOf(currentStation) + 1));
-                        if (!currentStation.equals("Kit Kat")) {
-                            direction.append(", Then transtion at [").append(currentStation).append("]  ");
+                        if (!currentStation.equals("Kit Kat") && !currentStation.equals("كيت كات")) {
+                            direction.append(", ").append(words.get(2)).append(" [").append(currentStation).append("]  ");
                             if (lineShared.indexOf(path.get(path.indexOf(currentStation) + 1)) > lineShared.indexOf(currentStation)) {
-                                direction.append("[").append(lineShared.get(lineShared.size() - 1)).append("] Direction  ");
+                                direction.append("[").append(lineShared.get(lineShared.size() - 1)).append("]").append(words.get(3)).append(" ");
                             } else {
-                                direction.append("[").append(lineShared.get(0)).append("] Direction  ");
+                                direction.append("[").append(lineShared.get(0)).append("]").append(words.get(3)).append(" ");
                             }
                         } else {
                             if (lineShared.indexOf(path.get(path.indexOf(currentStation) + 1)) > lineShared.indexOf(currentStation)) {
                                 direction.delete(direction.length() - 31, direction.length());
-                                direction.append("[").append(lineShared.get(lineShared.size() - 1)).append("] Direction  ");
+                                direction.append("[").append(lineShared.get(lineShared.size() - 1)).append("]").append(words.get(3)).append(" ");
                             }
                         }
                     }
