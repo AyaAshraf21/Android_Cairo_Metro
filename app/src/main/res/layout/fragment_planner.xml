@@ -5,199 +5,233 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+    android:padding="16dp"
     tools:context=".PlannerFragment">
 
-    <TextView
-        android:id="@+id/entryStationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="44dp"
-        android:text="Entry Station"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/allRoutesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Exit Station"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entrySpinner" />
-
-
-    <Button
-        android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#003366"
-        android:onClick="ResetButton"
-        android:text="Reset"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeOrTransitionSpinner" />
-
-    <Button
-        android:id="@+id/confirmButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#003366"
-        android:onClick="ConfirmButton"
-        android:text="Confirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/resetButton" />
-
-    <AutoCompleteTextView
-        android:id="@+id/entrySpinner"
-        android:layout_width="270dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="3dp"
-        android:dropDownWidth="300dp"
-        android:dropDownHeight="200dp"
-        android:hint="Type to search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entryStationTextView" />
-
-    <AutoCompleteTextView
-        android:id="@+id/exitSpinner"
-        android:layout_width="270dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="3dp"
-        android:dropDownWidth="300dp"
-        android:dropDownHeight="200dp"
-        android:hint="Type to search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allRoutesTextView" />
-
-    <TextView
-        android:id="@+id/preferText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        android:text="Quickest Route or Least Transitions?"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exitSpinner" />
-
-    <ImageView
-        android:id="@+id/switchIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="switchSelection"
-        android:src="@drawable/autorenew_24dp_145bc6_fill0_wght400_grad0_opsz24"
-        app:layout_constraintBottom_toTopOf="@+id/exitSpinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/exitSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/entrySpinner" />
-
-    <RadioGroup
-        android:id="@+id/timeOrTransitionSpinner"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/frame1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:orientation="horizontal"
+        android:layout_height="390dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preferText">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RadioButton
-            android:id="@+id/time"
-            android:layout_width="161dp"
-            android:layout_height="wrap_content"
-            android:text="Quickest Route"
-            android:textAlignment="viewStart" />
-
-        <RadioButton
-            android:id="@+id/transition"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Least Transitions"
-            android:textAlignment="viewStart" />
-    </RadioGroup>
+            android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/entryStationPlace"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="entryStationClick"
-        android:src="@drawable/map"
-        app:layout_constraintBottom_toTopOf="@+id/switchIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/entrySpinner" />
+            <TextView
+                android:id="@+id/entryStationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Entry Station"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/exitStationPlace"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:onClick="exitStationClick"
-        android:src="@drawable/map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/exitSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/switchIcon" />
+            <AutoCompleteTextView
+                android:id="@+id/entrySpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Type to search"
+                app:layout_constraintEnd_toStartOf="@+id/entryStationPlace"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/entryStationTextView" />
 
-    <EditText
-        android:id="@+id/editTextText3"
-        android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/entryStationPlace"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/map"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/entryStationTextView" />
+
+            <ImageView
+                android:id="@+id/switchIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/switch2"
+                app:layout_constraintBottom_toTopOf="@+id/exitStationTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/entryStationPlace" />
+
+            <TextView
+                android:id="@+id/exitStationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Exit Station"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switchIcon" />
+
+            <AutoCompleteTextView
+                android:id="@+id/exitSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Type to search"
+                app:layout_constraintEnd_toStartOf="@+id/exitStationPlace"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exitStationTextView" />
+
+            <ImageView
+                android:id="@+id/exitStationPlace"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/map"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exitStationTextView" />
+
+            <TextView
+                android:id="@+id/preferText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Quickest Route or Least Transitions?"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exitSpinner" />
+
+            <RadioGroup
+                android:id="@+id/timeOrTransitionSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/preferText">
+
+                <RadioButton
+                    android:id="@+id/time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Quickest Route"
+                    android:textColor="#706F71" />
+
+                <RadioButton
+                    android:id="@+id/transition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Least Transitions"
+                    android:textColor="#706F71" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/resetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/mainButton"
+                android:onClick="ResetButton"
+                android:text="Reset"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timeOrTransitionSpinner" />
+
+            <Button
+                android:id="@+id/confirmButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/mainButton"
+                android:onClick="ConfirmButton"
+                android:text="Confirm"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timeOrTransitionSpinner" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Second Frame -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/frame2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.079"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/destinationText" />
-
-    <Button
-        android:id="@+id/checkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#003366"
-        android:onClick="check"
-        android:text="Check"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
-        app:layout_constraintStart_toEndOf="@+id/editTextText3"
-        app:layout_constraintTop_toTopOf="@+id/editTextText3" />
-
-    <TextView
-        android:id="@+id/destinationText"
-        android:layout_width="218dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="Please Enter Your Destination (Optional)"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetButton" />
-
-    <ImageView
-        android:id="@+id/popup"
-        android:layout_width="26dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="8dp"
-        android:onClick="popup"
-        android:src="@drawable/help_24dp_003366_fill0_wght400_grad0_opsz24"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="16sp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toEndOf="@+id/checkButton"
-        app:layout_constraintTop_toTopOf="@+id/editTextText3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frame1">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/destinationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please Enter Your Destination(Optional)"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextText3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Enter your Destination"
+                android:inputType="text"
+                app:layout_constraintEnd_toStartOf="@+id/checkButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/destinationText" />
+
+            <TextView
+                android:id="@+id/checkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:onClick="check"
+                android:text="Check"
+                android:textColor="@color/secondaryButton"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextText3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/editTextText3"
+                app:layout_constraintVertical_bias="0.608" />
+
+            <ImageView
+                android:id="@+id/popup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:onClick="popup"
+                android:src="@drawable/help_24dp_003366_fill0_wght400_grad0_opsz24"
+                app:layout_constraintBottom_toBottomOf="@+id/destinationText"
+                app:layout_constraintStart_toEndOf="@+id/destinationText"
+                app:layout_constraintTop_toTopOf="@+id/destinationText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

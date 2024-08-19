@@ -143,6 +143,6 @@ public class English implements Language
 
     @Override
     public String getDestinationTextView() {
-        return "Please Enter Your Destination (Optional)";
+        return "Please Enter Your Destination \n(Optional)";
     }
 }

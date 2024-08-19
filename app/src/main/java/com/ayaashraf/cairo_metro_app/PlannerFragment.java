@@ -14,6 +14,7 @@
     import android.net.Uri;
     import android.os.Build;
     import android.os.Bundle;
+    import android.text.Html;
     import android.util.DisplayMetrics;
     import android.util.Log;
     import android.view.LayoutInflater;
@@ -57,9 +58,9 @@
         private ArrayList<String> stations, prefer;
         private ArrayAdapter<String> adapter, adapter2;
         private Button allRoutesButton;
-        private Button confirmButton, checkButton , resetButton;
+        private Button confirmButton , resetButton;
 
-        private TextView entryStationTextView, screenNameTextView, exitStationTextView, preferTextView, destinationText ;
+        private TextView entryStationTextView, screenNameTextView, exitStationTextView, preferTextView, destinationText , checkButton;
 
         private ArrayList<ArrayList<String>> allPaths;
 
@@ -107,7 +108,7 @@
             destinationText = view.findViewById(R.id.destinationText);
             transitionButton = view.findViewById(R.id.transition);
             entryStationTextView = view.findViewById(R.id.entryStationTextView);
-            exitStationTextView = view.findViewById(R.id.allRoutesTextView);
+            exitStationTextView = view.findViewById(R.id.exitStationTextView);
             preferTextView = view.findViewById(R.id.preferText);
             entrySpinner = view.findViewById(R.id.entrySpinner);
             exitSpinner = view.findViewById(R.id.exitSpinner);
@@ -119,6 +120,7 @@
             exitStationPlace = view.findViewById(R.id.exitStationPlace);
             editTextText3 = view.findViewById(R.id.editTextText3);
             checkButton = view.findViewById(R.id.checkButton);
+
 
 
             ShakeDetector.ShakeListener shakeListener = new ShakeDetector.ShakeListener() {
@@ -159,7 +161,9 @@
             exitSpinner.setHint(language.getExitSpinner());
             resetButton.setText(language.getResetButton());
             confirmButton.setText(language.getConfirmButton());
-            checkButton.setText(language.getCheckButton());
+            String htmlText = "<u>"+language.getCheckButton()+"</u>";
+            checkButton.setText(Html.fromHtml(htmlText));
+
             timeButton.setText(language.getPrefer().get(0));
             transitionButton.setText(language.getPrefer().get(1));
             editTextText3.setHint(language.getHint());
