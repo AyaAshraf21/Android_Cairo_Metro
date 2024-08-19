@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:backgroundTint="#003366"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Here you can enter any location you wish to go and the nearest train station will show
+                        up in the 'Exit Station' Field, be specific about the location e.g. 'El Mohandessin Giza'"
+        android:textColor="#FAFAFA" />
+
+</LinearLayout>
