@@ -66,7 +66,7 @@
 
         private AutoCompleteTextView entrySpinner;
         EditText editTextText3;
-        private AutoCompleteTextView exitSpinner;
+        private  AutoCompleteTextView exitSpinner;
         private RadioGroup timeOrTrasitionSpinner;
 
         private ImageView switchIcon, entryStationPlace, exitStationPlace,popup;
@@ -123,28 +123,28 @@
 
 
 
-            ShakeDetector.ShakeListener shakeListener = new ShakeDetector.ShakeListener() {
-
-                @Override
-                public void onShakeDetected() {
-                    Log.d("PlannerFragment", "shaking");
-                }
-
-                @Override
-                public void onShakeStopped() {
-                    entrySpinner.setText("");
-                    exitSpinner.setText("");
-//                    allRoutesButton.setVisibility(View.INVISIBLE);
-
-                }
-            };
-            Sensey.getInstance().startShakeDetection(shakeListener);
+//            ShakeDetector.ShakeListener shakeListener = new ShakeDetector.ShakeListener() {
+//
+//                @Override
+//                public void onShakeDetected() {
+//                    Log.d("PlannerFragment", "shaking");
+//                }
+//
+//                @Override
+//                public void onShakeStopped() {
+//                    entrySpinner.setText("");
+//                    exitSpinner.setText("");
+////                    allRoutesButton.setVisibility(View.INVISIBLE);
+//
+//                }
+//            };
+//            Sensey.getInstance().startShakeDetection(shakeListener);
 
 
             sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, getActivity().MODE_PRIVATE);
             languageCode = sharedPreferences.getString(KEY_LANGUAGE, "ar");
             entrySpinner.setText(sharedPreferences.getString(KEY_ENTRYSTATION, ""));
-            exitSpinner.setText(sharedPreferences.getString(KEY_EXITSTATION, ""));
+//            exitSpinner.setText(sharedPreferences.getString(KEY_EXITSTATION, ""));
             Boolean timeSelected = sharedPreferences.getBoolean(KEY_PREFER, true);
             if (timeSelected) timeOrTrasitionSpinner.check(R.id.time);
             else timeOrTrasitionSpinner.check(R.id.transition);
@@ -378,6 +378,7 @@
             showDialog();
 
         }
+
 
         public void ResetButton(View view) {
             entrySpinner.setText("");
