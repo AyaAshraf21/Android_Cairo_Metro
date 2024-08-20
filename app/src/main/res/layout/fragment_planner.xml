@@ -34,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Entry Station"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,9 +43,13 @@
             <AutoCompleteTextView
                 android:id="@+id/entrySpinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/search_view_background"
                 android:hint="Type to search"
+                android:paddingLeft="15dp"
+                android:textAlignment="textStart"
                 app:layout_constraintEnd_toStartOf="@+id/entryStationPlace"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/entryStationTextView" />
@@ -75,8 +80,9 @@
                 android:id="@+id/exitStationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Exit Station"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,9 +91,12 @@
             <AutoCompleteTextView
                 android:id="@+id/exitSpinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/search_view_background"
                 android:hint="Type to search"
+                android:paddingLeft="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/exitStationPlace"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/exitStationTextView" />
@@ -108,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Quickest Route or Least Transitions?"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +140,7 @@
                     android:layout_weight="1"
                     android:buttonTint="@color/secondaryButton"
                     android:text="Quickest Route"
-                    android:textColor="#706F71" />
+                    android:textColor="@color/black" />
 
                 <RadioButton
                     android:id="@+id/transition"
@@ -138,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Least Transitions"
-                    android:textColor="#706F71" />
+                    android:textColor="@color/black" />
             </RadioGroup>
 
             <Button
@@ -193,6 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Please Enter Your Destination(Optional)"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -201,10 +212,13 @@
             <EditText
                 android:id="@+id/editTextText3"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/search_view_background"
                 android:hint="Enter your Destination"
                 android:inputType="text"
+                android:paddingLeft="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/checkButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/destinationText" />
@@ -233,6 +247,7 @@
                 android:onClick="popup"
                 android:src="@drawable/help_24dp_003366_fill0_wght400_grad0_opsz24"
                 app:layout_constraintBottom_toBottomOf="@+id/destinationText"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/destinationText"
                 app:layout_constraintTop_toTopOf="@+id/destinationText" />
 
