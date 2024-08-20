@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:padding="16dp"
+    android:buttonTint="@color/secondaryButton"
     tools:context=".PlannerFragment">
 
 
@@ -127,6 +128,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:buttonTint="@color/secondaryButton"
                     android:text="Quickest Route"
                     android:textColor="#706F71" />
 
@@ -170,7 +172,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="26dp"
         android:layout_marginEnd="8dp"
         android:paddingBottom="16sp"
         app:cardCornerRadius="16dp"

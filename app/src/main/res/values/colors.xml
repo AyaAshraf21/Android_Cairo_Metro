@@ -2,9 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="mainButton">#9036D1</color>
-    <color name="secondaryButton">#984BB5</color>
-    <color name="mainColor">#E0C9F1</color>
-    <color name="background">#F5F4F6</color>
-
+    <color name="mainButton">#A51313</color>
+    <color name="secondaryButton">#8C0F0F</color>
+    <color name="mainColor">#9A9A9A</color>
+    <color name="background">#EDEDED</color>
+    <color name="dialogStations">#FD9B9B</color>
 </resources>
