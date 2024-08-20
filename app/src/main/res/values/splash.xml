@@ -8,7 +8,7 @@
     <style name="Theme.CairoMetroApp.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/white</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/avd_mapanimated</item>
-        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">7000</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">10000</item>
         <item name="postSplashScreenTheme">@style/Theme.CairoMetroApp</item>
     </style>
 </resources>

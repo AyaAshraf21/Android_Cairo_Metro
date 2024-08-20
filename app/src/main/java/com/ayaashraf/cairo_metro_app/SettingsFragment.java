@@ -1,6 +1,5 @@
 package com.ayaashraf.cairo_metro_app;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,20 +14,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import mumayank.com.airlocationlibrary.AirLocation;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SettingsFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -43,8 +31,6 @@ public class SettingsFragment extends Fragment {
     TextView languageTextView;
     Button saveButton;
 
-
-
     private String mParam1;
     private String mParam2;
 
@@ -52,14 +38,6 @@ public class SettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
     public static SettingsFragment newInstance(String param1, String param2) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
@@ -74,33 +52,28 @@ public class SettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, getActivity().MODE_PRIVATE);
         String languageCode = sharedPreferences.getString(KEY_LANGUAGE, "ar");
-        sharedViewModel viewModel =new ViewModelProvider(requireActivity()).get(sharedViewModel.class);
+
+        sharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(sharedViewModel.class);
         if (languageCode.equals("ar")) {
             viewModel.setScreenName("الاعدادات");
         } else if (languageCode.equals("en")) {
             viewModel.setScreenName("Setting");
         }
+
         language = LanguageFactory.getInstance().getLanguage(languageCode);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        // Initialize SharedPreferences here
-        if (getActivity() != null) {
-            sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, getActivity().MODE_PRIVATE);
-        }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-//        settingsTextView = view.findViewById(R.id.settingTextView);
+
         languageTextView = view.findViewById(R.id.languageTextView);
         saveButton = view.findViewById(R.id.saveButton);
 
-//        settingsTextView.setText(language.getSettingsTextView());
         languageTextView.setText(language.getLanguageTextView());
         saveButton.setText(language.getSaveButton());
 
@@ -114,25 +87,42 @@ public class SettingsFragment extends Fragment {
         Spinner spinner = view.findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
 
-        Button saveButton = view.findViewById(R.id.saveButton);
+        String savedLanguageCode = sharedPreferences.getString(KEY_LANGUAGE, "ar");
+        int selectedIndex = savedLanguageCode.equals("en") ? 0 : 1;
+        spinner.setSelection(selectedIndex);
+
+        view.setLayoutDirection(savedLanguageCode.equals("ar") ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedLanguage = spinner.getSelectedItem().toString();
-                String languageCode = selectedLanguage.equals("English")?"en":"ar";
 
-                // Save the language code in SharedPreferences
+                String selectedLanguage = spinner.getSelectedItem().toString();
+                String languageCode = selectedLanguage.equals("English") ? "en" : "ar";
+
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(KEY_LANGUAGE, languageCode);
                 editor.apply();
+                language = LanguageFactory.getInstance().getLanguage(languageCode);
 
+               sharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(sharedViewModel.class);
+                if (languageCode.equals("ar")) {
+                    viewModel.setScreenName("الاعدادات");
+                } else if (languageCode.equals("en")) {
+                    viewModel.setScreenName("Setting");
+                }
+                languageTextView.setText(language.getLanguageTextView());
+                saveButton.setText(language.getSaveButton());
+
+
+                View rootView = getView();
+                if (rootView != null) {
+                    rootView.setLayoutDirection(languageCode.equals("ar") ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
+                }
                 Toast.makeText(getContext(), "Language saved: " + languageCode, Toast.LENGTH_SHORT).show();
             }
         });
 
         return view;
     }
-
-    }
-
-
+}

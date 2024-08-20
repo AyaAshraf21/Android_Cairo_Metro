@@ -100,6 +100,7 @@
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_planner, container, false);
+
             Sensey.getInstance().init(context);
             popup = view.findViewById(R.id.popup);
             popup.setOnClickListener(v -> showOverlayDialog());
@@ -151,6 +152,8 @@
 
             language = LanguageFactory.getInstance().getLanguage(languageCode);
 
+            view.setLayoutDirection(languageCode.equals("ar") ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
+
             entryStationTextView.setText(language.getEntryStationTextView());
 
             exitStationTextView.setText(language.getExitStationTextView());
@@ -169,7 +172,6 @@
             editTextText3.setHint(language.getHint());
             stations = language.getStations();
             prefer = language.getPrefer();
-
             adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, stations);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 

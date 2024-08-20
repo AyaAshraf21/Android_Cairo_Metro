@@ -18,6 +18,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,6 +28,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:padding="16dp">
 
             <TextView
@@ -49,6 +51,7 @@
                 android:background="@drawable/search_view_background"
                 android:hint="Type to search"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toStartOf="@+id/entryStationPlace"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +100,7 @@
                 android:background="@drawable/search_view_background"
                 android:hint="Type to search"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/exitStationPlace"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/exitStationTextView" />
@@ -186,6 +190,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/white"
         android:paddingBottom="16sp"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
@@ -196,12 +201,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:padding="16dp">
 
             <TextView
                 android:id="@+id/destinationText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="0sp"
                 android:text="Please Enter Your Destination(Optional)"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -219,6 +226,7 @@
                 android:hint="Enter your Destination"
                 android:inputType="text"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/checkButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/destinationText" />
