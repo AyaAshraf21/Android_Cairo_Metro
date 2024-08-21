@@ -113,6 +113,7 @@ public class menuFragment extends Fragment {
         slideModels.add(new SlideModel(R.drawable.img,ScaleTypes.FIT));
         slideModels.add(new SlideModel(R.drawable.img,ScaleTypes.FIT));
         slideModels.add(new SlideModel(R.drawable.img,ScaleTypes.FIT));
+
         imageSlider.setImageList(slideModels,ScaleTypes.FIT);
         return view;
     }

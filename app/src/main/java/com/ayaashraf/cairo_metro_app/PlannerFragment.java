@@ -57,7 +57,6 @@
         private static final double EARTH_RADIUS = 6371.0;
         private ArrayList<String> stations, prefer;
         private ArrayAdapter<String> adapter, adapter2;
-        private Button allRoutesButton;
         private Button confirmButton , resetButton;
 
         private TextView entryStationTextView, screenNameTextView, exitStationTextView, preferTextView, destinationText , checkButton;

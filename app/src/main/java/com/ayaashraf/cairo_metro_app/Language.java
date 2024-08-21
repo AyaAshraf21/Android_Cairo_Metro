@@ -54,6 +54,10 @@ public interface Language
     public String getResetButton();
     public String getSaveButton();
 
+    public String getDevolpedBy();
+
+    public String getDevolpedByHere();
+
 
 
 

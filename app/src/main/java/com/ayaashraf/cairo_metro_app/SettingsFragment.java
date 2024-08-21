@@ -1,13 +1,17 @@
 package com.ayaashraf.cairo_metro_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,11 +30,10 @@ public class SettingsFragment extends Fragment {
     private static final String SHARED_PREF_NAME = "mypref";
     private static final String KEY_LANGUAGE = "language";
     private Language language;
-
-    TextView settingsTextView;
-    TextView languageTextView;
+    TextView languageTextView, devolpedText, devolpedByText;
     Button saveButton;
 
+    ImageView arrow, linkedlnImage;
     private String mParam1;
     private String mParam2;
 
@@ -73,9 +76,23 @@ public class SettingsFragment extends Fragment {
 
         languageTextView = view.findViewById(R.id.languageTextView);
         saveButton = view.findViewById(R.id.saveButton);
+        devolpedByText = view.findViewById(R.id.devolpedByText);
+        devolpedText = view.findViewById(R.id.devolpedText);
+        arrow = view.findViewById(R.id.arrow);
+        linkedlnImage = view.findViewById(R.id.linkedlnImage);
 
         languageTextView.setText(language.getLanguageTextView());
         saveButton.setText(language.getSaveButton());
+        devolpedText.setText(language.getDevolpedBy());
+        devolpedByText.setText(language.getDevolpedByHere());
+
+        linkedlnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("SettingsFragment", "LinkedIn image clicked");
+                goToLinkTree();
+            }
+        });
 
         ArrayList<String> lang = new ArrayList<>();
         lang.add("English");
@@ -105,7 +122,7 @@ public class SettingsFragment extends Fragment {
                 editor.apply();
                 language = LanguageFactory.getInstance().getLanguage(languageCode);
 
-               sharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(sharedViewModel.class);
+                sharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(sharedViewModel.class);
                 if (languageCode.equals("ar")) {
                     viewModel.setScreenName("الاعدادات");
                 } else if (languageCode.equals("en")) {
@@ -113,6 +130,8 @@ public class SettingsFragment extends Fragment {
                 }
                 languageTextView.setText(language.getLanguageTextView());
                 saveButton.setText(language.getSaveButton());
+                devolpedText.setText(language.getDevolpedBy());
+                devolpedByText.setText(language.getDevolpedByHere());
 
 
                 View rootView = getView();
@@ -124,5 +143,16 @@ public class SettingsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void goToLinkTree() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "https://linktr.ee/DepiTeam");
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(getContext(), "No application to handle this action", Toast.LENGTH_SHORT).show();
+        }
     }
 }

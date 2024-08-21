@@ -139,6 +139,16 @@ public class Arabic implements Language
         return "حفظ";
     }
 
+    @Override
+    public String getDevolpedBy() {
+        return "اتطور عن طريق هؤلاء المطورين";
+    }
+
+    @Override
+    public String getDevolpedByHere() {
+        return "سوف تجد رابط المطورين عندما تضغط هنا";
+    }
+
     public String getDestinationTextView() {
         return "من فضلك ادخل وجهتك (اختياري)";
     }

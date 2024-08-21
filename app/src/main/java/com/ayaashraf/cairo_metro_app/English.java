@@ -145,4 +145,14 @@ public class English implements Language
     public String getDestinationTextView() {
         return "Please Enter Your Destination \n(Optional)";
     }
+
+    @Override
+    public String getDevolpedBy() {
+        return "Devolped By These Devolpers";
+    }
+
+    @Override
+    public String getDevolpedByHere() {
+        return "You Will Find The Devolpers Linkedln When You Press Here";
+    }
 }

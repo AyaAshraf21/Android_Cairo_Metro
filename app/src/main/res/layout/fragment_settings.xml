@@ -2,17 +2,87 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/arr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsFragment">
 
     <androidx.cardview.widget.CardView
+        android:layout_width="349dp"
+        android:layout_height="169dp"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/devolpedText"
+                android:layout_width="314dp"
+                android:layout_height="59dp"
+                android:layout_marginTop="16dp"
+                android:text="Devolped By These Devolpers"
+                android:textColor="@color/mainButton"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/linkedlnImage"
+                android:layout_width="85dp"
+                android:layout_height="58dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="goToLinkTree"
+                android:src="@drawable/linkedin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/devolpedByText" />
+
+            <TextView
+                android:id="@+id/devolpedByText"
+                android:layout_width="193dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="You WIll Find The Devolpers Linkedln When You Press Here"
+                android:textColor="@color/mainButton"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/devolpedText" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/right_arrow"
+                app:layout_constraintEnd_toStartOf="@+id/linkedlnImage"
+                app:layout_constraintHorizontal_bias="0.192"
+                app:layout_constraintStart_toEndOf="@+id/devolpedByText"
+                app:layout_constraintTop_toTopOf="@+id/devolpedByText" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginBottom="32dp"
         app:cardCornerRadius="18sp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.484"
@@ -28,13 +98,14 @@
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:backgroundTint="@color/mainButton"
                 android:text="Save"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 app:cornerRadius="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/languageTextView" />
 
