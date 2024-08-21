@@ -141,7 +141,7 @@ public class Arabic implements Language
 
     @Override
     public String getDevolpedBy() {
-        return "اتطور عن طريق هؤلاء المطورين";
+        return "تعرف على المطورين";
     }
 
     @Override

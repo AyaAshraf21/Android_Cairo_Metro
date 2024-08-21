@@ -60,7 +60,7 @@ public class SettingsFragment extends Fragment {
         if (languageCode.equals("ar")) {
             viewModel.setScreenName("الاعدادات");
         } else if (languageCode.equals("en")) {
-            viewModel.setScreenName("Setting");
+            viewModel.setScreenName("Settings");
         }
 
         language = LanguageFactory.getInstance().getLanguage(languageCode);
@@ -126,7 +126,7 @@ public class SettingsFragment extends Fragment {
                 if (languageCode.equals("ar")) {
                     viewModel.setScreenName("الاعدادات");
                 } else if (languageCode.equals("en")) {
-                    viewModel.setScreenName("Setting");
+                    viewModel.setScreenName("Settings");
                 }
                 languageTextView.setText(language.getLanguageTextView());
                 saveButton.setText(language.getSaveButton());

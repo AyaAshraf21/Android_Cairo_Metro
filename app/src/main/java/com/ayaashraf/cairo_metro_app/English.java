@@ -148,11 +148,11 @@ public class English implements Language
 
     @Override
     public String getDevolpedBy() {
-        return "Devolped By These Devolpers";
+        return "Meet The Team!";
     }
 
     @Override
     public String getDevolpedByHere() {
-        return "You Will Find The Devolpers Linkedln When You Press Here";
+        return "You Will Find Our LinkedIn Profiles Here!";
     }
 }
